@@ -1,10 +1,42 @@
-use eframe::egui;
+use eframe::{egui, wgpu};
+use egui_wgpu::{WgpuConfiguration, WgpuSetup, WgpuSetupCreateNew};
+use std::sync::Arc;
 
 fn main() -> eframe::Result {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
 
+
+
+    let wgpu_setup: WgpuSetup = WgpuSetup::CreateNew(WgpuSetupCreateNew {
+        device_descriptor: Arc::new(|adapter| {
+            let base_limits = if adapter.get_info().backend == wgpu::Backend::Gl {
+                wgpu::Limits::downlevel_webgl2_defaults()
+            } else {
+                wgpu::Limits::downlevel_defaults()
+            };
+
+            wgpu::DeviceDescriptor {
+                label: Some("egui wgpu device"),
+                required_limits: wgpu::Limits {
+                    max_texture_dimension_2d: 4096,
+                    max_texture_dimension_1d: 4096,
+                    max_color_attachments: 4,
+                    ..base_limits
+                },
+                ..Default::default()
+            }
+        }),
+        ..WgpuSetupCreateNew::without_display_handle()
+    });
+
+    let wgpu_options = WgpuConfiguration {
+        wgpu_setup: wgpu_setup,
+        ..WgpuConfiguration::default()
+    };
+
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
+        wgpu_options: wgpu_options,
         ..Default::default()
     };
 

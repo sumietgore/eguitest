@@ -958,6 +958,7 @@ name = "eguitest"
 version = "0.1.0"
 dependencies = [
  "eframe",
+ "egui-wgpu",
  "env_logger",
 ]
 
