@@ -9,19 +9,12 @@ fn main() -> eframe::Result {
 
     let wgpu_setup: WgpuSetup = WgpuSetup::CreateNew(WgpuSetupCreateNew {
         device_descriptor: Arc::new(|adapter| {
-            let base_limits = if adapter.get_info().backend == wgpu::Backend::Gl {
-                wgpu::Limits::downlevel_webgl2_defaults()
-            } else {
-                wgpu::Limits::downlevel_defaults()
-            };
 
             wgpu::DeviceDescriptor {
                 label: Some("egui wgpu device"),
                 required_limits: wgpu::Limits {
-                    max_texture_dimension_2d: 4096,
-                    max_texture_dimension_1d: 4096,
                     max_color_attachments: 4,
-                    ..base_limits
+                    ..wgpu::Limits::downlevel_defaults()
                 },
                 ..Default::default()
             }
