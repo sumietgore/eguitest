@@ -9,13 +9,12 @@ fn main() -> eframe::Result {
 
     let wgpu_setup: WgpuSetup = WgpuSetup::CreateNew(WgpuSetupCreateNew {
         device_descriptor: Arc::new(|adapter| {
-
             wgpu::DeviceDescriptor {
                 label: Some("egui wgpu device"),
                 required_limits: wgpu::Limits {
-                    max_color_attachments: 4,
                     ..wgpu::Limits::downlevel_defaults()
-                },
+                }
+                .using_resolution(adapter.limits()),
                 ..Default::default()
             }
         }),
