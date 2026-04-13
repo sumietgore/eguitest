@@ -7,27 +7,30 @@ fn main() -> eframe::Result {
 
 
 
-    let wgpu_setup: WgpuSetup = WgpuSetup::CreateNew(WgpuSetupCreateNew {
-        device_descriptor: Arc::new(|adapter| {
-            wgpu::DeviceDescriptor {
-                label: Some("egui wgpu device"),
-                required_features: wgpu::Features::empty(),
-                required_limits: wgpu::Limits::downlevel_defaults()
-                    .using_resolution(adapter.limits()),
-                ..Default::default()
-            }
-        }),
-        ..WgpuSetupCreateNew::without_display_handle()
-    });
+    // let wgpu_setup: WgpuSetup = WgpuSetup::CreateNew(WgpuSetupCreateNew {
+    //     device_descriptor: Arc::new(|adapter| {
+    //         wgpu::DeviceDescriptor {
+    //             label: Some("egui wgpu device"),
+    //             required_features: wgpu::Features::empty(),
+    //             required_limits: wgpu::Limits::downlevel_defaults()
+    //                 .using_resolution(adapter.limits()),
+    //             ..Default::default()
+    //         }
+    //     }),
+    //     ..WgpuSetupCreateNew::without_display_handle()
+    // });
 
-    let wgpu_options = WgpuConfiguration {
-        wgpu_setup: wgpu_setup,
-        ..WgpuConfiguration::default()
-    };
+    // let wgpu_options = WgpuConfiguration {
+    //     wgpu_setup: wgpu_setup,
+    //     ..WgpuConfiguration::default()
+    // };
 
     let options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default().with_inner_size([320.0, 240.0]),
-        wgpu_options: wgpu_options,
+        // wgpu_options: wgpu_options,
+        renderer: eframe::Renderer::Glow,
+        vsync:false,
+        multisampling: 0,
         ..Default::default()
     };
 
