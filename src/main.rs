@@ -11,10 +11,9 @@ fn main() -> eframe::Result {
         device_descriptor: Arc::new(|adapter| {
             wgpu::DeviceDescriptor {
                 label: Some("egui wgpu device"),
-                required_limits: wgpu::Limits {
-                    ..wgpu::Limits::downlevel_defaults()
-                }
-                .using_resolution(adapter.limits()),
+                required_features: wgpu::Features::empty(),
+                required_limits: wgpu::Limits::downlevel_defaults()
+                    .using_resolution(adapter.limits()),
                 ..Default::default()
             }
         }),
